@@ -9,13 +9,14 @@ class ParkourGame
 private:
     std::unique_ptr<Player> player;
     std::unique_ptr<Parkour> parkour;
-    bool autoplay = true;
+    bool autoplay;
 
 public:
-    ParkourGame()
+    ParkourGame(bool autoplay)
     {
         player = std::unique_ptr<Player>(new Player(BTN_LEFT_PIN, BTN_RIGHT_PIN));
         parkour = std::unique_ptr<Parkour>(new Parkour());
+        this->autoplay = autoplay;
     }
 
     void tick()
@@ -37,13 +38,14 @@ public:
 
         if (parkour->crashesObstacle(player))
         {
-            player->restart();
-            parkour->regenerate();
+            Serial.println("Crashed");
+            player.reset(new Player(BTN_LEFT_PIN, BTN_RIGHT_PIN));
         }
 
         bool loopsBack = (position == 0) && (previousPosition == NUM_LEDS - 1);
         if (loopsBack)
         {
+            Serial.println("Looped");
             player->speedup();
             parkour->startNextParkour();
         }

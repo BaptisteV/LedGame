@@ -2,7 +2,7 @@
 #include <vector>
 #include "Hsv.hpp"
 #include "parkour/Obstacle.hpp"
-#include "PlayerBrickRenderer.hpp"
+#include "PlayerRenderer.hpp"
 
 class Parkour
 {
@@ -10,20 +10,22 @@ private:
     std::array<ObstacleStruct, NUM_LEDS> obstacles;
     std::array<ObstacleStruct, NUM_LEDS> nextObstacles;
 
-    void render(int position, HSV color)
+    void render(int position, const HSV &color)
     {
         int ledIndex = position % NUM_LEDS;
         leds[ledIndex] = CHSV(color.hue, color.saturation, color.value);
     };
 
     static const int spacing = 4;
-    static void generate(std::array<ObstacleStruct, NUM_LEDS> &tofill)
+    std::array<ObstacleStruct, NUM_LEDS> create()
     {
+        std::array<ObstacleStruct, NUM_LEDS> result = {};
+
         int currentIndex = 0;
         // Start should not contain obstacles
         for (int iStart = 0; iStart < spacing * 2; iStart++)
         {
-            tofill.at(iStart) = createObstacle(ObstacleType::None);
+            result.at(iStart) = createObstacle(ObstacleType::None);
             currentIndex++;
         }
 
@@ -36,17 +38,18 @@ private:
             {
                 if (currentIndex >= NUM_LEDS)
                     break;
-                tofill.at(currentIndex) = createObstacle(o.type);
+                result.at(currentIndex) = createObstacle(o.type);
                 currentIndex++;
             }
             for (int s = 0; s < spacing; s++)
             {
                 if (currentIndex >= NUM_LEDS)
                     break;
-                tofill.at(currentIndex) = createObstacle(ObstacleType::None);
+                result.at(currentIndex) = createObstacle(ObstacleType::None);
                 currentIndex++;
             }
         }
+        return result;
     }
 
 public:
@@ -60,14 +63,16 @@ public:
 
     void regenerate()
     {
-        generate(obstacles);
-        generate(nextObstacles);
+        obstacles = create();
+        nextObstacles = create();
+        // generate(obstacles);
+        // generate(nextObstacles);
     }
 
     void startNextParkour()
     {
         obstacles = nextObstacles;
-        generate(nextObstacles);
+        nextObstacles = create();
     }
 
     void show(int playerPosition)
@@ -76,7 +81,7 @@ public:
         {
             render(i, nextObstacles[i].color);
         }
-        for (int j = playerPosition + 1; j < obstacles.size(); j++)
+        for (int j = playerPosition + 1; j < NUM_LEDS; j++)
         {
             render(j, obstacles[j].color);
         }

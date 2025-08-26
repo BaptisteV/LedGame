@@ -3,14 +3,15 @@
 #include <parkour/ParkourGame.hpp>
 
 std::unique_ptr<ParkourGame> game;
+const bool autoplay = true;
 
 void setup()
 {
     Serial.begin(115200);
-    Serial.println("setup...");
-    game = std::unique_ptr<ParkourGame>(new ParkourGame());
+    Serial.println("Creating game...");
+    game = std::unique_ptr<ParkourGame>(new ParkourGame(autoplay));
     Serial.println("show...");
-    game->update();
+    game->show();
 }
 
 void loop()
@@ -26,7 +27,8 @@ void loop()
     }
     catch (std::exception &e)
     {
-        Serial.printf("Unhandled exception: %s, Restarting...\n", e.what());
-        game.reset(new ParkourGame());
+        Serial.printf("Unhandled exception: %s\n", e.what());
+        Serial.println("Restarting...");
+        game.reset(new ParkourGame(autoplay));
     }
 }

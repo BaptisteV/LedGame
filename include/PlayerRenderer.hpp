@@ -5,10 +5,10 @@
 #include "Direction.hpp"
 #include "config/Colors.hpp"
 
-class PlayerBrickRenderer
+class PlayerRenderer
 {
 public:
-    PlayerBrickRenderer() {
+    PlayerRenderer() {
     };
     void setup()
     {
@@ -18,12 +18,12 @@ public:
         FastLED.show();
     };
 
-    void render(int centerIndex, Direction direction)
+    void render(int centerIndex, const Direction &direction)
     {
         std::vector<HSV> colors = getPlayerColors(direction);
         HSV headColor = colors[0];
         leds[centerIndex] = CHSV(headColor.hue, headColor.saturation, headColor.value);
-        
+
         int indicatorIndex = (centerIndex - 1) % NUM_LEDS;
         HSV doubleColor = colors[1];
         leds[indicatorIndex] = CHSV(doubleColor.hue, doubleColor.saturation, doubleColor.value);

@@ -1,19 +1,19 @@
-
 #pragma once
 #include "Hsv.hpp"
 #include <memory>
 #include "Direction.hpp"
 #include <OneButton.h>
-#include "PlayerBrickRenderer.hpp"
+#include "PlayerRenderer.hpp"
 
 class Player
 {
 private:
 	double speed = 0.05;
-	const double speedStep = speed / 2;
-	// const double speedMultiplier = 0.00005;
+	const double speedStep = 0.05;
+	const double maxSpeed = 0.50;
 
-	static std::string DirectionToString(Direction direction)
+	static std::string
+	DirectionToString(const Direction &direction)
 	{
 		switch (direction)
 		{
@@ -32,7 +32,6 @@ private:
 
 	static void handleLeftClick(void *ctx)
 	{
-		Serial.println("handleLeftClick(void *ctx)");
 		auto *self = static_cast<Player *>(ctx);
 		Serial.printf("%s => %s\n", DirectionToString(self->direction).c_str(), DirectionToString(Direction::Left).c_str());
 		self->direction = Direction::Left;
@@ -40,7 +39,6 @@ private:
 
 	static void handleDoubleLeftClick(void *ctx)
 	{
-		Serial.println("handleDoubleLeftClick(void *ctx)");
 		auto *self = static_cast<Player *>(ctx);
 		Serial.printf("%s => %s\n", DirectionToString(self->direction).c_str(), DirectionToString(Direction::DoubleLeft).c_str());
 		self->direction = Direction::DoubleLeft;
@@ -79,21 +77,21 @@ public:
 		right->setDebounceMs(1);
 		right->setClickMs(150);
 
-		renderer = std::unique_ptr<PlayerBrickRenderer>(new PlayerBrickRenderer());
+		renderer = std::unique_ptr<PlayerRenderer>(new PlayerRenderer());
 		renderer->setup();
 		direction = Direction::Right;
 	};
 
 	void move()
 	{
-		position += speed;
+		position = std::fmod(position + speed, NUM_LEDS);
 	}
 
 	void speedup()
 	{
-		if (speed >= 1.0)
+		if (speed >= maxSpeed)
 		{
-			speed = 1.0;
+			speed = maxSpeed;
 			return;
 		}
 		speed += speedStep;
@@ -130,7 +128,7 @@ public:
 	}
 
 private:
-	std::unique_ptr<PlayerBrickRenderer> renderer;
+	std::unique_ptr<PlayerRenderer> renderer;
 	std::unique_ptr<OneButton> left;
 	std::unique_ptr<OneButton> right;
 };

@@ -7,7 +7,7 @@
 #define SATURATION 255
 #define BRIGHTNESS 150
 
-#define OBSTACLE_BRIGHTNESS BRIGHTNESS / 2
+#define OBSTACLE_BRIGHTNESS 75
 #define OBSTACLE_SATURATION 200
 
 HSV blue = HSV{240, SATURATION, BRIGHTNESS};
@@ -20,7 +20,7 @@ HSV obstacleRed = HSV{0, OBSTACLE_SATURATION, OBSTACLE_BRIGHTNESS};
 
 HSV none = HSV{0, OBSTACLE_SATURATION, 0};
 
-std::vector<HSV> getPlayerColors(Direction dir)
+std::vector<HSV> getPlayerColors(const Direction &dir)
 {
     switch (dir)
     {
