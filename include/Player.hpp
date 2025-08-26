@@ -8,9 +8,8 @@
 class Player
 {
 private:
-	double speed = 0.05;
-	const double speedStep = 0.05;
-	const double maxSpeed = 0.50;
+	const double speedStep = 0.01;
+	const double maxSpeed = 0.25;
 
 	static std::string
 	DirectionToString(const Direction &direction)
@@ -59,6 +58,7 @@ private:
 	}
 
 public:
+	double speed = 0.05;
 	double position;
 	Direction direction;
 	Player(int pinBtnLeft,
@@ -118,13 +118,6 @@ public:
 			show();
 			FastLED.show();
 		}
-	}
-
-	void restart()
-	{
-		position = 0.0;
-
-		renderer->render(position, direction);
 	}
 
 private:

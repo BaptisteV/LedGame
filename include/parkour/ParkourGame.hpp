@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "config/Hardware.hpp"
+#include "constants/Hardware.hpp"
 #include "Player.hpp"
 #include "Parkour.hpp"
 
@@ -45,8 +45,8 @@ public:
         bool loopsBack = (position == 0) && (previousPosition == NUM_LEDS - 1);
         if (loopsBack)
         {
-            Serial.println("Looped");
             player->speedup();
+            Serial.printf("Looped, speed is %f\n", player->speed);
             parkour->startNextParkour();
         }
     }

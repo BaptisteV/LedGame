@@ -1,11 +1,9 @@
 #pragma once
 #include <Arduino.h>
-#include <map>
 #include <exception>
 #include "Direction.hpp"
 #include "Player.hpp"
 #include "ObstacleType.hpp"
-#include "config/Colors.hpp"
 
 struct ObstacleStruct
 {

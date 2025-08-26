@@ -28,7 +28,7 @@ void loop()
     catch (std::exception &e)
     {
         Serial.printf("Unhandled exception: %s\n", e.what());
-        Serial.println("Restarting...");
+        Serial.println("Restarting game...");
         game.reset(new ParkourGame(autoplay));
     }
 }

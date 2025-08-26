@@ -1,9 +1,9 @@
 #pragma once
 #include <map>
-#include "config/Hardware.hpp"
+#include "constants/Hardware.hpp"
 #include "Hsv.hpp"
 #include "Direction.hpp"
-#include "config/Colors.hpp"
+#include "constants/Colors.hpp"
 
 class PlayerRenderer
 {
