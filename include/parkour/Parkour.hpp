@@ -10,12 +10,6 @@ private:
     std::array<ObstacleStruct, NUM_LEDS> obstacles;
     std::array<ObstacleStruct, NUM_LEDS> nextObstacles;
 
-    void render(int position, const HSV &color)
-    {
-        int ledIndex = position % NUM_LEDS;
-        leds[ledIndex] = CHSV(color.hue, color.saturation, color.value);
-    };
-
     static const int spacing = 4;
     std::array<ObstacleStruct, NUM_LEDS> create()
     {
@@ -55,18 +49,8 @@ private:
 public:
     Parkour()
     {
-        obstacles = {};
-        nextObstacles = {};
-
-        regenerate();
-    }
-
-    void regenerate()
-    {
         obstacles = create();
         nextObstacles = create();
-        // generate(obstacles);
-        // generate(nextObstacles);
     }
 
     void startNextParkour()
@@ -79,11 +63,13 @@ public:
     {
         for (int i = 0; i < playerPosition - 1; i++)
         {
-            render(i, nextObstacles[i].color);
+            HSV color = nextObstacles[i].color;
+            leds[i] = CHSV(color.hue, color.saturation, color.value);
         }
         for (int j = playerPosition + 1; j < NUM_LEDS; j++)
         {
-            render(j, obstacles[j].color);
+            HSV color = obstacles[j].color;
+            leds[j] = CHSV(color.hue, color.saturation, color.value);
         }
     }
 

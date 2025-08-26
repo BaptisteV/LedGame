@@ -99,7 +99,7 @@ public:
 
 	int headIndex()
 	{
-		return static_cast<int>(round(position)) % NUM_LEDS;
+		return static_cast<int>(position);
 	}
 
 	void show()
